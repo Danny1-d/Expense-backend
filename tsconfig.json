@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES6",
+    "module": "commonjs",
+    "rootDir": "src",         // tells TypeScript where your source files are
+    "outDir": "dist",         // tells TypeScript where to put compiled files
+    "strict": true,
+    "esModuleInterop": true
+  },
+  "include": ["server/**/*"]
+}
