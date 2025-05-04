@@ -12,6 +12,12 @@ router.post ("/", async (req, res) => {
   console.log(email)
   console.log(password)
 
+  if (typeof first_name !== "string" || typeof last_name !== "string" || typeof email !== "string" || typeof password !== "string") {
+    // res.status(400).send("Invalid input");
+    // return;
+    console.log("invalid input")
+  }
+
   try {
     const checkResult = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
@@ -23,7 +29,7 @@ router.post ("/", async (req, res) => {
         if (err) {
           console.log("Error hashing password:", err)
         } else {
-          const result = await db.query("INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4)", [first_name, last_name, email, hash]);
+          const result = await db.query("INSERT INTO users (first_name, last_name, email, password) VALUES ($1, $2, $3, $4) RETURNING *", [first_name, last_name, email, hash]);
           console.log(result)
           res.send("Login successful")
         }

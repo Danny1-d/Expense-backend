@@ -1,8 +1,8 @@
 import express from "express"
 import bodyParser from "body-parser";
 import cors from "cors"
-import register from "../routes/Register.ts"
-import login from "../routes/Login.ts"
+import register from "./routes/Register.ts"
+import login from "./routes/Login.ts"
 const app = express();
 const port = 5000;
 
