@@ -10,21 +10,29 @@
   "scripts": {
     "build": "tsc",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": " node dist/server.ts",
+    "start": " node dist/server.js",
     "dev": "nodemon --exec ts-node src/server.ts"
   },
   "dependencies": {
     "bcrypt": "^5.1.1",
+    "bcryptjs": "^3.0.2",
+    "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
-    "pg": "^8.15.6"
+    "jsonwebtoken": "^9.0.2",
+    "nodemailer": "^7.0.2",
+    "pg": "^8.15.6",
+    "resend": "^4.5.1"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
+    "@types/cookie-parser": "^1.4.8",
     "@types/cors": "^2.8.17",
     "@types/express": "^5.0.1",
+    "@types/jsonwebtoken": "^9.0.9",
     "@types/node": "^22.15.3",
+    "@types/nodemailer": "^6.4.17",
     "@types/pg": "^8.11.14",
     "ts-node": "^10.9.2",
     "typescript": "^5.8.3"

@@ -1,22 +1,23 @@
 import express from "express"
 import bodyParser from "body-parser";
 import cors from "cors"
-import register from "./routes/Register.ts"
-import login from "./routes/Login.ts"
+import cookieParser from "cookie-parser"
+import router from "./routes/AuthRoutes.ts";
+import userRouter from "./routes/UserRoutes.ts";
 const app = express();
 const port = 5000;
 
-app.use(bodyParser.urlencoded({ extended: true}))
-app.use(bodyParser.json())
+app.use(express.json()); // For JSON payloads
+app.use(express.urlencoded({ extended: true })); // For form-data (optional)
+app.use(cookieParser())
 app.use(cors())
 
 app.get ("/", (req, res) => {
   res.send("Hello World")
 })
 
-app.use("/auth/signup", register)
-app.use("/auth/signin", login)
-
+app.use('/auth', router)
+app.use('/user', userRouter)
 
 app.listen(port, () => {
   console.log(`Runinng on port ${port}`);
