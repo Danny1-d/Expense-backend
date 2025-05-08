@@ -81,6 +81,7 @@ export const Register = async (req:Request, res:Response) => {
           
           // Send back the created user's data (e.g., first name, last name, email)
           res.status(201).json({
+            success: true,
             message: 'User registered successfully',
             user: {
               firstName: newUser.firstName,
@@ -111,6 +112,10 @@ export const Login = async (req:Request, res:Response) => {
   try {
     const result = await db.query("SELECT * FROM users WHERE email = $1", [email]);
 
+    if (!result.rows.length) {
+      res.status(400).json({ message: "User not found" });
+    }
+
     if (result.rows.length > 0) {
       const user = result.rows[0];
       console.log("user", user.id)
@@ -131,15 +136,16 @@ export const Login = async (req:Request, res:Response) => {
               maxAge: 7 * 24 * 60 * 60 * 1000,
             });
 
-             res.status(200).send({success: true, message: "Login successful"})
+             res.status(200).json({success: true, message: "success"})
           } else {
-            res.json("Incorrect Password")
+            res.status(400).json({ error: "Incorrect Password"})
             console.log("Incorrect Password")
           }
         }
       })
     } 
   } catch (err) {
+    res.status(400).json({error: err})
     console.log(err)
   }
 
@@ -176,7 +182,7 @@ export const sendVerifyOTP = async (req:Request, res:Response) => {
     }
 
     const otp = String(Math.floor(100000 + Math.random() * 900000)); // Generate a 6-digit OTP
-    const ExpireOtpDate = new Date(Date.now() + 10 * 60 * 1000); // Set expiration time to 10 minutes from now
+    const ExpireOtpDate = new Date(Date.now() +  7 * 24 * 60 * 60 * 1000); // Set expiration time to 7 days from now
     const unixTimestamp = Math.floor(ExpireOtpDate.getTime() / 1000);
 
     await db.query("UPDATE users SET verifyOtp = $1, verifyOtpExpireAt = $2 WHERE id = $3", [otp, unixTimestamp, userId]);
@@ -192,11 +198,11 @@ export const sendVerifyOTP = async (req:Request, res:Response) => {
     await resend.emails.send({
       from: process.env.SENDER_EMAIL!,
       to: user.email,
-      subject: 'Hello World',
+      subject: 'Verify your email',
       html: `Hello ${user.firstName},\n\nYour OTP is ${otp}. It will expire in 10 minutes.\n\nBest regards,\nThe Danny Team`
     });
 
-    res.status(200).json({ message: "OTP sent successfully" });
+    // res.status(200).json({ message: "OTP sent successfully" });
 
   } catch (err) {
     console.log(err)
@@ -265,16 +271,16 @@ export const sendResetOTP = async (req:Request, res:Response) => {
       res.status(404).json({ message: "User not found" });
     }
 
-    const { userId } = req.body;
+    // const { userId } = req.body;
 
     const otp = String(Math.floor(100000 + Math.random() * 900000)); // Generate a 6-digit OTP
-    const ExpireOtpDate = new Date(Date.now() + 10 * 60 * 1000); // Set expiration time to 10 minutes from now
+    const ExpireOtpDate = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000); // Set expiration time to 7 days from now
     const unixTimestamp = Math.floor(ExpireOtpDate.getTime() / 1000);
 
     // await db.query("INSERT INTO users (verifyOtp) VALUES ($1) RETURNING *", [otp]);
     // await db.query("INSERT INTO users (verifyOtpExpireAt) VALUES ($1) RETURNING *", [ExpireOtpDate]);
 
-    await db.query("UPDATE users SET resetOtp = $1, resetOtpExpiresAt = $2 WHERE id = $3", [otp, unixTimestamp, userId]);
+    await db.query("UPDATE users SET resetOtp = $1, resetOtpExpiresAt = $2 WHERE email = $3", [otp, unixTimestamp, email]);
 
     //sending OTP email
     await resend.emails.send({
