@@ -1,4 +1,4 @@
-import db from "../db/index.ts";
+import db from "../db/index.js";
 import type { Request, Response } from "express";
 
 export const getUserById = async (req: Request, res: Response) => {

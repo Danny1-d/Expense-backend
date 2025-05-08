@@ -1,11 +1,11 @@
 import type { Request, Response } from 'express';
-import db from "../db/index.ts";
+import db from "../db/index.js";
 import bcrypt from "bcrypt";
 import Jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 dotenv.config();
 import { Resend } from 'resend';
-import transporter from "../config/NodeMailer.ts";
+// import transporter from "../config/NodeMailer.ts";
 
 const saltRounds = 10;
 
@@ -187,13 +187,6 @@ export const sendVerifyOTP = async (req:Request, res:Response) => {
 
     await db.query("UPDATE users SET verifyOtp = $1, verifyOtpExpireAt = $2 WHERE id = $3", [otp, unixTimestamp, userId]);
 
-
-    // await db.query("INSERT INTO users (verifyOtp) VALUES ($1) RETURNING *", [otp]);
-    // await db.query("INSERT INTO users (verifyOtpExpireAt) VALUES ($1) RETURNING *", [ExpireOtpDate]);
-
-    // await db.query("INSERT INTO users verifyOtp = $1, verifyOtpExpireAt = $2 WHERE id = $3", [otp, ExpireOtpDate, userId]);
-
-
     //sending OTP email
     await resend.emails.send({
       from: process.env.SENDER_EMAIL!,
@@ -202,10 +195,9 @@ export const sendVerifyOTP = async (req:Request, res:Response) => {
       html: `Hello ${user.firstName},\n\nYour OTP is ${otp}. It will expire in 10 minutes.\n\nBest regards,\nThe Danny Team`
     });
 
-    // res.status(200).json({ message: "OTP sent successfully" });
+    res.status(200).json({ message: "OTP sent successfully" });
 
   } catch (err) {
-    console.log(err)
     res.status(500).json({ message: "Internal server error" });
   }
 }
