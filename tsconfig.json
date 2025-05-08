@@ -2,7 +2,7 @@
   "compilerOptions": {
     "target": "ES6",
     "module": "ESNext",     // Change to ESNext for ES module output
-    "rootDir": "src",         // tells TypeScript where your source files are
+    "rootDir": "src",       // tells TypeScript where your source files are
     "outDir": "dist",         // tells TypeScript where to put compiled files
     "strict": true,
     "esModuleInterop": true,

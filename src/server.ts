@@ -2,8 +2,8 @@ import express from "express"
 import bodyParser from "body-parser";
 import cors from "cors"
 import cookieParser from "cookie-parser"
-import router from "./routes/AuthRoutes.ts";
-import userRouter from "./routes/UserRoutes.ts";
+import router from "./routes/AuthRoutes";
+import userRouter from "./routes/UserRoutes";
 const app = express();
 const port = 5000;
 
