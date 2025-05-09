@@ -15,7 +15,7 @@ dotenv.config();
 import { Resend } from 'resend';
 // import transporter from "../config/NodeMailer.ts";
 const saltRounds = 10;
-const resend = new Resend(process.env.RESEND_API_KEY);
+const resend = new Resend('re_4dqX7hwd_8czpQ6G6zHWa1ADYW676AXgh');
 export const Register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log("BODY RECEIVED:", req.body);
     if (!req.body) {
