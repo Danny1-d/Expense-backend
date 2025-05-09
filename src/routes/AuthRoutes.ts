@@ -1,8 +1,8 @@
 import express from "express";
 const router = express.Router();
 
-import { Register, Login, LogOut, sendVerifyOTP, verifyEmail, isAuthenticated, sendResetOTP, resetPassword } from "../controllers/AuthController.js";
-import { AuthMiddleware } from "../middleware/Authmiddleware.js";
+import { Register, Login, LogOut, sendVerifyOTP, verifyEmail, isAuthenticated, sendResetOTP, resetPassword } from "../controllers/AuthController";
+import { AuthMiddleware } from "../middleware/Authmiddleware";
 
 router.post('/signup', Register)
 router.post('/signin', Login)
